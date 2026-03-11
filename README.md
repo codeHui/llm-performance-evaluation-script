@@ -1,5 +1,7 @@
-@[TOC](这里写自定义目录标题)
-本文主要是个人学习记录，请见谅不够详细和错字
+本文目的主要是个人学习记录，请见谅不够详细和存在错字（打字太快，没详细检查）。  
+下面是我们来自康奈尔大学的暑期实习生撰写的英文报告（学术报告风格，更多图表），是其实习的一个工作学习总结，感兴趣可以查看：  
+[English Report.pdf](english_report/English%20Report.pdf)  
+背景：该测试分析是在2024年，当时网上未搜到相关的评估数据，所以我们自己设计做了这个脚本实验测试，下面是测试的细节和结果分析。
 
 # 硬件
 1张Nvidia A100 80G 
@@ -11,8 +13,9 @@ Llama3.1 70b 4bit
 * 开源可视化工具nvitop
 安装命令：pip install nvitop
 运行命令：nvitop
-![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/e253ef46b8f64e05a05fd037181c93ef.png)* Nvidia自带监控
-watch -n 1 nvidia-smi
+![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/e253ef46b8f64e05a05fd037181c93ef.png)  
+* Nvidia自带监控  
+`watch -n 1 nvidia-smi`
 ## CPU和系统内存监控工具
 Linux的top命令（top后再按1，可以查看多核cpu每个核心的占用）
 
@@ -33,7 +36,7 @@ ollama run llama3.1:70b
 #### prompt 
 `tell a story in " + str(world_count) + " words:`
 #### 脚本
-https://github.com/codeHui/ai_script/blob/main/A100_80G_Llama3_70B/70b_output-stream.py
+[70b_output-stream.py](A100_80G_Llama3_70B/70b_output-stream.py)
 
 #### Test Result
 | Number of Requests | Output Word Count | Average Tokens | Average Time (s) | Average Speed (tokens/s) |  
@@ -57,7 +60,7 @@ https://github.com/codeHui/ai_script/blob/main/A100_80G_Llama3_70B/70b_output-st
 #### prompt 
 `"give a title for below text in 10 words: "  + text` (text has 484 words)
 #### 脚本
-https://github.com/codeHui/ai_script/blob/main/A100_80G_Llama3_70B/70b_input-stream.py
+[70b_input-stream.py](A100_80G_Llama3_70B/70b_input-stream.py)
 
 #### Test Result
 
@@ -72,16 +75,16 @@ https://github.com/codeHui/ai_script/blob/main/A100_80G_Llama3_70B/70b_input-str
 ### 系统内存和GPU内存占用变化
 ![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/662e57caae954ab0ad4877e05965874b.png)
 ### 系统内存总结
-如果部署40G的llm, 系统内存大于40G肯定行（小于不确定，没测过），系统会先将llm加载到系统内存中（比较慢，感觉1秒1G的速度），然后瞬间将40G的llm加载到GPU的内存。
-之后并发请求测试也基本完全不会用到系统内存。
-if the system memory is very big (220G, much bigger than the Llama3.1 70b(40G))
-when execute ollama pull, the system memory will cache the llm file(40G)
-when execute ollama run, the system memory will cache the llm file(40G) if not cached yet, once done, the llm file will be copied to GPU memory(VRAM) immediately
-once the llm is running, there is no need for system memory to cache LLM
+- 如果部署40G的llm, 系统内存大于40G肯定行（小于不确定，没测过），系统会先将llm加载到系统内存中（比较慢，感觉1秒1G的速度），然后瞬间将40G的llm加载到GPU的内存。
+- 之后并发请求测试也基本完全不会用到系统内存。
+- if the system memory is very big (220G, much bigger than the Llama3.1 70b(40G))
+- when execute `ollama pull`, the system memory will cache the llm file(40G)
+- when execute `ollama run`, the system memory will cache the llm file(40G) if not cached yet, once done, the llm file will be copied to GPU memory(VRAM) immediately
+- once the llm is running, there is no need for system memory to cache LLM
 
 ### GPU内存总结
 
- - 在并发测试中，GPU内存一直保持42G,并无增加，所以GPU内存大于LLM应该就行 同时我测了如果用
+- 在并发测试中，GPU内存一直保持42G,并无增加，所以GPU内存大于LLM应该就行 同时我测了如果用
 
 - 如果有两个A100 80G的话，ollama 也只会使用一个GPU(这里不多讨论多GPU的方案，也有很多细节)
 
@@ -98,5 +101,4 @@ once the llm is running, there is no need for system memory to cache LLM
 ## Context window
 Llama3.1的context window是128k, 但我测试了“让llm生成3000字的故事”，实际只会返回1000多字的答案，所以某个地方应该有设置限制了响应的token数（我没深入查，如果有知道是哪里限制的（比如chat API的哪个字段），请告知下）。
 所以我上面只测试了1000以下的token数（一般用户场景足够），但如果真的是用满了128k的context window，是否系统内存和gpu内存会有比较明显的提升，我也不敢确定（因为没测过，有测过的也可以share下）
-![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/f1ae9c5ac19041959ec186e3a09bbfd0.png)
 
