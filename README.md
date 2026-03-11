@@ -99,6 +99,6 @@ ollama run llama3.1:70b
  1. 由上面两个测试可以看出，虽然input和output都占用总token，但output的生成更慢 （所以可以解释到GPT-4o 的收费，也是output tokens比input tokens 贵）
 # 其他考虑因素
 ## Context window
-Llama3.1的context window是128k, 但我测试了“让llm生成3000字的故事”，实际只会返回1000多字的答案，所以某个地方应该有设置限制了响应的token数（我没深入查，如果有知道是哪里限制的（比如chat API的哪个字段），请告知下）。
-所以我上面只测试了1000以下的token数（一般用户场景足够），但如果真的是用满了128k的context window，是否系统内存和gpu内存会有比较明显的提升，我也不敢确定（因为没测过，有测过的也可以share下）
+Llama3.1的context window是128k, 但我测试了“让llm生成3000字的故事”，实际只会返回1000多字的答案。
+所以我上面只测试了1000以下的token数（一般用户场景够），但如果真的是用满了128k的context window，是否系统内存和gpu内存会有比较明显的提升，我也不敢确定（因为没测过，有测过的也可以share下）
 
