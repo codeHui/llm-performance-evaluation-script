@@ -1,6 +1,6 @@
 本文目的主要是个人学习记录，请见谅不够详细和存在错字（打字太快，没详细检查）。  
 下面是我们来自康奈尔大学的暑期实习生撰写的英文报告（学术报告风格，更多图表），是其实习的一个工作学习总结，感兴趣可以查看：  
-[English Report.pdf](english_report/English%20Report.pdf)  
+[English Report (by our Summer Intern).pdf](English%20Report%20%28by%20our%20Summer%20Intern%29.pdf)  
 背景：该测试分析是在2024年，当时网上未搜到相关的评估数据，所以我们自己设计做了这个脚本实验测试，下面是测试的细节和结果分析。
 
 # 硬件
@@ -13,7 +13,7 @@ Llama3.1 70b 4bit
 * 开源可视化工具nvitop
 安装命令：pip install nvitop
 运行命令：nvitop
-![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/e253ef46b8f64e05a05fd037181c93ef.png)  
+![nvitop.png](readme_image/nvitop.png)  
 * Nvidia自带监控  
 `watch -n 1 nvidia-smi`
 ## CPU和系统内存监控工具
@@ -73,7 +73,7 @@ ollama run llama3.1:70b
 # 性能分析
 ## 系统内存和GPU内存占用变化分析
 ### 系统内存和GPU内存占用变化
-![在这里插入图片描述](https://i-blog.csdnimg.cn/direct/662e57caae954ab0ad4877e05965874b.png)
+![gpu.png](readme_image/gpu.png)  
 ### 系统内存总结
 - 如果部署40G的llm, 系统内存大于40G肯定行（小于不确定，没测过），系统会先将llm加载到系统内存中（比较慢，感觉1秒1G的速度），然后瞬间将40G的llm加载到GPU的内存。
 - 之后并发请求测试也基本完全不会用到系统内存。
